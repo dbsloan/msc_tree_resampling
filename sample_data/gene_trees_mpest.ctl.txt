@@ -1,0 +1,19 @@
+1
+429 16
+brachymeles_bonitae 1 brachymeles_bonitae
+chalcides_ocellatus 1 chalcides_ocellatus
+emoia_caeruleocauda 1 emoia_caeruleocauda
+eurylepis_taeniolatus 1 eurylepis_taeniolatus
+lobulia_elegans 1 lobulia_elegans
+lygosoma_brevicaudis 1 lygosoma_brevicaudis
+mabuya_unimarginata 1 mabuya_unimarginata
+mesoscincus_manguae 1 mesoscincus_manguae
+ophiomorus_raithmai 1 ophiomorus_raithmai
+plestiodon_fasciatus 1 plestiodon_fasciatus
+scincus_scincus 1 scincus_scincus
+sphenomorphus_tridigitus 1 sphenomorphus_tridigitus
+sphenomorphus_variegatus 1 sphenomorphus_variegatus
+typhlosaurus_sp 1 typhlosaurus_sp
+tytthoscincus_parvus 1 tytthoscincus_parvus
+xantusia_vigilis 1 xantusia_vigilis
+0
