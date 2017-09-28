@@ -50,7 +50,7 @@ my $usage =
                           jk: Jackknife. Must specify jkprob (see below).
 
 
-   Specify jackknife resampling probability [required if --sampling=jk]
+   Specify deletion resampling probability [required if --sampling=jk]
    
          --jkprob       - Probability (between 0 and 1) of deleting a 
                           given tree in jackknife analysis or, to use a 

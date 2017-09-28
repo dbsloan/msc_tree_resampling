@@ -30,8 +30,7 @@ Java - ASTRAL is written in Java, so Java JDK should be installed and in your PA
 
 ### MP-EST Requirements
 
-MP-EST - The Perl script calls MP-EST (http://faculty.franklin.uga.edu/lliu/content/mp-est), which must be installed, and the user must provide the full path and file name for the MP-EST executable. The script has been tested with MP-EST v1.5 and v1.6 but would likely work with other versions. The user most also provide the main content for the control file that is used to run MP-EST. See format in the sample_data: gene_trees_mpest.ctl.txt. The input file should be missing the first 3 lines of a typical MP-EST control file (see MP-EST documentation), which will be added in automatically by the script when calling MP-EST. This will include a random seed generated with the Perl "rand" function for each individual pseudoreplicate dataset.
-
+MP-EST - The Perl script calls MP-EST (http://faculty.franklin.uga.edu/lliu/content/mp-est), which must be installed, and the user must provide the full path and file name for the MP-EST executable. The script has been tested with MP-EST v1.5 and v1.6 but would likely work with other versions. The user must also provide the main content for the control file that is used to run MP-EST. See format in the sample_data: gene_trees_mpest.ctl.txt. The input file should be missing the first 3 lines of a typical MP-EST control file (see MP-EST documentation), which will be added in automatically by the script when calling MP-EST. This will include a random seed generated with the Perl "rand" function for each individual pseudoreplicate dataset. The user can specify the number of tree searches to perform with the first line of the control file, but in the current implementation only the first tree (not necessarily the best) will be reported.
 
 ### NJst and STAR Requirements
 
@@ -74,7 +73,7 @@ Usage: perl msc_tree_resampling.pl [arguments]
                           jk: Jackknife. Must specify jkprob (see below).
 
 
-   Specify jackknife resampling probability [required if --sampling=jk]
+   Specify jackknife deletion probability [required if --sampling=jk]
    
          --jkprob       - Probability (between 0 and 1) of deleting a 
                           given tree in jackknife analysis or, to use a 
