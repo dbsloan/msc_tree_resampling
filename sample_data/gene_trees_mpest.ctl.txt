@@ -1,4 +1,3 @@
-1
 429 16
 brachymeles_bonitae 1 brachymeles_bonitae
 chalcides_ocellatus 1 chalcides_ocellatus
@@ -16,4 +15,3 @@ sphenomorphus_variegatus 1 sphenomorphus_variegatus
 typhlosaurus_sp 1 typhlosaurus_sp
 tytthoscincus_parvus 1 tytthoscincus_parvus
 xantusia_vigilis 1 xantusia_vigilis
-0

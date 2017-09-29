@@ -21,25 +21,26 @@ Perl - The provided Perl script should be called by users (msc_tree_resampling.p
 Calling one of the four optional MSC analysis programs will have additional dependencies.
 
 
-### ASTRAL Requirements
+#### ASTRAL Requirements
 
 ASTRAL - The Perl script calls ASTRAL (https://github.com/smirarab/ASTRAL), which must be installed, and the user must provide the full path and file name for the ASTRAL jar file. The script has been tested with ASTRAL 4.10.5 and 4.11.2 but would likely work with other versions.
 
 Java - ASTRAL is written in Java, so Java JDK should be installed and in your PATH.
 
 
-### MP-EST Requirements
+#### MP-EST Requirements
 
-MP-EST - The Perl script calls MP-EST (http://faculty.franklin.uga.edu/lliu/content/mp-est), which must be installed, and the user must provide the full path and file name for the MP-EST executable. The script has been tested with MP-EST v1.5 and v1.6 but would likely work with other versions. The user must also provide the main content for the control file that is used to run MP-EST. See format in the sample_data: gene_trees_mpest.ctl.txt. The input file should be missing the first 3 lines of a typical MP-EST control file (see MP-EST documentation), which will be added in automatically by the script when calling MP-EST. This will include a random seed generated with the Perl "rand" function for each individual pseudoreplicate dataset. The user can specify the number of tree searches to perform with the first line of the control file, but in the current implementation only the first tree (not necessarily the best) will be reported.
+MP-EST - The Perl script calls MP-EST (http://faculty.franklin.uga.edu/lliu/content/mp-est), which must be installed, and the user must provide the full path and file name for the MP-EST executable. The script has been tested with MP-EST v1.5 and v1.6 but would likely work with other versions. The user must also provide the main content for the control file that is used to run MP-EST. See format in the sample_data: gene_trees_mpest.ctl.txt. The input file should be missing the first 4 lines and the last line of a typical MP-EST control file (see MP-EST documentation), which will be added in automatically by the script when calling MP-EST. This will include a random seed generated with the Perl "rand" function for each individual pseudoreplicate dataset. The user can specify the number of tree searches to perform for each MP-EST analysis using the --mpest_num option (default is to perform a single search). Only the best (highest likelihood) tree will be reported.
 
-### NJst and STAR Requirements
+
+#### NJst and STAR Requirements
 
 R - The NJst and STAR methods are part of the R package Phybase (http://faculty.franklin.uga.edu/lliu/content/phybase). Therefore, R and the Phybase package must be installed. This also requires the installation of additional R packages: ape, Matrix, and methods. The Rscript application that allows running R code must be either in your PATH or you must provide a full path to it when calling msc_tree_resampling.pl (see below). The scripts have been tested on Phybase 1.4 and 1.5, but would likely work on other versions as well. Note that these methods are distance-based and, therefore, require that every possible pair of species co-occur in at least one gene tree. In cases of resampling datasets with a lot of missing data, it is possible that a given pseudoreplicate dataset will not meet this requirement. In such cases, STAR and NJst report a warning rather than a species tree, and this will appear in the final output file.
 
 
 ## Output Format. 
 
-The script will produce pseudoreplicate tree files in the specified output directory. They will be named Rep_XXX.tre, where XXX ranges from 1 to the number of specified resampling replicates. Each file contains one newick-formatted gene tree on each line (the total number of gene trees will depend on the size of the original dataset and the resampling method). If one of the four MSC programs was specified with --method, the output directory will also contain a file called MSC_trees.tre. This file will contain one newick-formatted species tree on each line. The number of species trees should equal the number of pseudoreplicate datasets, and the ordering of the species trees within MSC_trees.tre follows the numerical order of the pseudoreplicate resampling files.
+The script will produce pseudoreplicate tree files in the specified output directory. They will be named Rep_XXX.tre, where XXX ranges from 1 to the number of specified resampling replicates. Each file contains one newick-formatted gene tree on each line (the total number of gene trees will depend on the size of the original dataset and the resampling method). If one of the four MSC programs was specified with --method, the output directory will also contain a file called MSC_trees.tre. This file will contain one newick-formatted species tree on each line. The number of species trees should equal the number of pseudoreplicate datasets, and the ordering of the species trees within MSC_trees.tre follows the numerical order of the pseudoreplicate resampling files. You may use the MSC_trees.tre file to calculate a majority-rule consensus of the bootstrap or jackknife replicates using another program, such as Phyutility (http://blackrim.org/programs/phyutility/), Mesquite (http://mesquiteproject.org/), and PAUP* (http://paup.phylosolutions.com/).  Finally, you may map the bootstrap or jackknife percentages onto the optimal tree for the original data set using the "Add support values..." function of TreeGraph2 (http://treegraph.bioinfweb.info/).
 
 
 ## Running msc_tree_resampling.pl:
@@ -117,6 +118,11 @@ Usage: perl msc_tree_resampling.pl [arguments]
                           See example file in sample data.
 
 
+   Number of MP-EST searches to perform [Only relevant if --method=mpest]
+
+         --mpest_num    - default: 1
+
+
    Path and filename for the Rscript application installed on local machine
      [required if --method=star or --method=njst and not already in PATH]
    
@@ -167,6 +173,7 @@ Usage: perl msc_tree_resampling.pl [arguments]
             --method=mpest 
             --mpest_file=/PATH/TO/MPEST/mpest 
             --mpest_ctl=sample_data/gene_trees_mpest.ctl.txt
+            --mpest_num=5
 
         perl msc_tree_resampling.pl 
             --gt_file=sample_data/gene_trees.tre  

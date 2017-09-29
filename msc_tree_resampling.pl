@@ -16,6 +16,7 @@ our $method;
 our $astral_jar;
 our $mpest_file;
 our $mpest_ctl;
+our $mpest_num = 1;
 our $Rscript = "Rscript";
 our $star_r_code = "r_code/star.r";
 our $njst_r_code = "r_code/njst.r";
@@ -65,7 +66,7 @@ my $usage =
                           astral: ASTRAL. Must specify astral_jar (see below).
                           
                           mpest: MP-EST. Must specify mpest_file and mpest_ctl 
-                          		 (see below).
+                          		 (see below).  
                           
                           star: STAR. Must specify outgroup and must specify 
                                 Rscript and star_r_code if not default 
@@ -92,6 +93,11 @@ my $usage =
    
    	     --mpest_ctl    - MP-EST control file template (including path)
                           See example file in sample data.
+
+
+   Number of MP-EST searches to perform [Only relevant if --method=mpest]
+   
+   	     --mpest_num    - default: 1
 
 
    Path and filename for the Rscript application installed on local machine
@@ -144,6 +150,7 @@ my $usage =
             --method=mpest 
             --mpest_file=/PATH/TO/MPEST/mpest 
             --mpest_ctl=sample_data/gene_trees_mpest.ctl.txt
+            --mpest_num=5
 
         perl $0 
             --gt_file=sample_data/gene_trees.tre  
@@ -174,6 +181,7 @@ GetOptions(
     'astral_jar=s'  => \$astral_jar,
     'mpest_file=s'  => \$mpest_file,
     'mpest_ctl=s'  => \$mpest_ctl,
+    'mpest_num=s'  => \$mpest_num,
     'Rscript=s'  => \$Rscript,
     'outgroup=s'  => \$outgroup,
     'star_r_code=s'  => \$star_r_code,
@@ -211,6 +219,7 @@ if ($method eq 'astral'){
 if ($method eq 'mpest'){
 	$mpest_file or die ("\n$usage\nERROR: The --mpest_file option must be used to specify the path and filename of the MP-EST executable file when --method=mpest.\n\n");
 	$mpest_ctl or die ("\n$usage\nERROR: The --mpest_ctl option must be used to specify the path and filename of the MP-EST control file template when --method=mpest.\n\n");
+	looks_like_number($mpest_num) or die ("\n$usage\nERROR: The specified value for --mpest_num is not numeric ($mpest_num).\n\n");
 } 
 
 if ($method eq 'star' || $method eq 'njst'){
@@ -341,7 +350,7 @@ unless ($method eq 'none'){
 		#Finally, delete temp control file and the individual replicate output files.
 		elsif ($method eq 'mpest'){
 			my $FHCTL = open_output(".$randnum\_TEMP_CONTROL_FILE");
-			print $FHCTL "$output_dir\/Rep_$i\.tre\n0\n", int(rand(1000000000)), "\n$mpest_ctl_text";
+			print $FHCTL "$output_dir\/Rep_$i\.tre\n0\n", int(rand(1000000000)), "\n$mpest_num\n$mpest_ctl_text\n0";
 			system ("$mpest_file .$randnum\_TEMP_CONTROL_FILE >> $output_dir\/MP-EST_log.txt");
 			my $mpest_output_file;
 			if (-e "$output_dir\/Rep_$i\.tre\.tre"){
@@ -354,8 +363,9 @@ unless ($method eq 'none'){
 			
 			my @mpest_output = file_to_array($mpest_output_file);
 			my $block_flag = 0;
-			my $tree_stored = 0;
 			my %taxa_hash;
+			my $best_tree;
+			my $best_score;
 			
 			foreach my $mpest_line (@mpest_output){
 				if ($mpest_line =~ /^\s+translate/){
@@ -364,18 +374,21 @@ unless ($method eq 'none'){
 				}
 				
 				if ($block_flag){
-					if ($mpest_line =~ /^\s+tree.+\s\=\s(\(.+\)\;)/){
-						my $newick_string = $1;
+					if ($mpest_line =~ /^\s+tree\smpest\s\[([\-\d\.]+)\]\s\=\s(\(.+\)\;)/){
+						my $lnl_score = $1;
+						my $newick_string = $2;
 						
-						foreach my $key (sort keys %taxa_hash){
-							my $species = $taxa_hash{$key};
-							$newick_string =~ s/\($key\:/\($species\:/g;
-							$newick_string =~ s/\,$key\:/\,$species\:/g;
+						unless ($best_tree){
+							$best_score = $lnl_score;
+							$best_tree = $newick_string;
+							next;
 						}
 						
-						print $FH_TO "$newick_string\n";
-						$tree_stored = 1;
-						last;
+						if ($lnl_score > $best_score){
+							$best_score = $lnl_score;
+							$best_tree = $newick_string;							
+						}
+						
 					}elsif($mpest_line =~ /^\s+(\d+\s[\w\s]+)[\,\;]/){
 						my $transl_line = $1;
 						my @sl = split (/\s+/, $transl_line);
@@ -384,12 +397,19 @@ unless ($method eq 'none'){
 							$species_name .= $sl[$array_pos];
 						}
 						$taxa_hash{$sl[0]} = $species_name;
-					}else{
-						die ("\nERROR: Could not parse the following line within in translation table in $output_dir\/Rep_$i\.tre\.tre\:\n$mpest_line\n\n");
 					}
 				}
 			}
-			$tree_stored or die ("\nERROR: Could not find a tree line in $output_dir\/Rep_$i\.tre\.tre\n\n");
+			$best_tree or die ("\nERROR: Could not find a tree line in $output_dir\/$mpest_output_file\n\n");
+
+			foreach my $key (sort keys %taxa_hash){
+				my $species = $taxa_hash{$key};
+				$best_tree =~ s/\($key\:/\($species\:/g;
+				$best_tree =~ s/\,$key\:/\,$species\:/g;
+			}
+
+
+			print $FH_TO "$best_tree\n";
 			unlink ".$randnum\_TEMP_CONTROL_FILE";
 			unlink $mpest_output_file;
 			-e "$output_dir\/Rep_$i\.tre\_output.tre" and unlink "$output_dir\/Rep_$i\.tre\_output.tre";
