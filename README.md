@@ -27,6 +27,7 @@ ASTRAL - The Perl script calls ASTRAL (https://github.com/smirarab/ASTRAL), whic
 
 Java - ASTRAL is written in Java, so Java JDK should be installed and in your PATH.
 
+NOTE - ASTRAL does not consistently root the inferred species trees among pseudoreplicates. So it is important to ensure that all of these trees are consistently rooted before you calculate a consensus tree.  You may do so using the -rr and -names commands from Phyutility (https://github.com/blackrim/phyutility), for example.
 
 #### MP-EST Requirements
 
@@ -40,7 +41,7 @@ R - The NJst and STAR methods are part of the R package Phybase (http://faculty.
 
 ## Output Format. 
 
-The script will produce pseudoreplicate tree files in the specified output directory. They will be named Rep_XXX.tre, where XXX ranges from 1 to the number of specified resampling replicates. Each file contains one newick-formatted gene tree on each line (the total number of gene trees will depend on the size of the original dataset and the resampling method). If one of the four MSC programs was specified with --method, the output directory will also contain a file called MSC_trees.tre. This file will contain one newick-formatted species tree on each line. The number of species trees should equal the number of pseudoreplicate datasets, and the ordering of the species trees within MSC_trees.tre follows the numerical order of the pseudoreplicate resampling files. You may use the MSC_trees.tre file to calculate a majority-rule consensus of the bootstrap or jackknife replicates using another program, such as Phyutility (http://blackrim.org/programs/phyutility/), Mesquite (http://mesquiteproject.org/), and PAUP* (http://paup.phylosolutions.com/).  Finally, you may map the bootstrap or jackknife percentages onto the optimal tree for the original data set using the "Add support values..." function of TreeGraph2 (http://treegraph.bioinfweb.info/).
+The script will produce pseudoreplicate tree files in the specified output directory. They will be named Rep_XXX.tre, where XXX ranges from 1 to the number of specified resampling replicates. Each file contains one newick-formatted gene tree on each line (the total number of gene trees will depend on the size of the original dataset and the resampling method). If one of the four MSC programs was specified with --method, the output directory will also contain a file called MSC_trees.tre. This file will contain one newick-formatted species tree on each line. The number of species trees should equal the number of pseudoreplicate datasets, and the ordering of the species trees within MSC_trees.tre follows the numerical order of the pseudoreplicate resampling files. You may use the MSC_trees.tre file to calculate a majority-rule consensus of the bootstrap or jackknife replicates using another program, such as Phyutility (https://github.com/blackrim/phyutility), Mesquite (http://mesquiteproject.org/), and PAUP* (http://paup.phylosolutions.com/).  Finally, you may map the bootstrap or jackknife percentages onto the optimal tree for the original data set using the "Add support values..." function of TreeGraph2 (http://treegraph.bioinfweb.info/).
 
 
 ## Running msc_tree_resampling.pl:
