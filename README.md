@@ -9,6 +9,11 @@ Scripts for automating gene-tree-level jackknife and bootstrap resampling for mu
 The main Perl script (msc_tree_resampling.pl) implements a resampling scheme (either bootstrapping or jackknifing) to generate pseudoreplicates of an original dataset consisting of multiple gene trees. Optionally, the script can then call one of four MSC programs (ASTRAL, MP-EST, NJst, or STAR) to infer a species tree for each of the resulting pseudoreplicate datasets. This tool is also distributed with two additional R scripts (star.r and njst.r), which are called by the main script when running STAR or NJst and should not be run directly by the user.
 
 
+## Citation: 
+
+Simmons MP, Sloan DB, Springer MS, Gatesy J. In Press. [Gene-wise resampling outperforms site-wise resampling in phylogenetic coalescence analyses](https://www.sciencedirect.com/science/article/pii/S1055790318301404). Molecular Phylogenetics and Evolution.
+
+
 ## Minimum Requirements: 
 
 This automation is implemented with a Perl script that has been designed for a Unix environment (Mac OSX or Linux). It has been tested in Mac OSX 10.12 and Linux CentOS 6, but it should work in most Unix environments.
@@ -28,6 +33,7 @@ ASTRAL - The Perl script calls ASTRAL (https://github.com/smirarab/ASTRAL), whic
 Java - ASTRAL is written in Java, so Java JDK should be installed and in your PATH.
 
 NOTE - ASTRAL does not consistently root the inferred species trees among pseudoreplicates. So it is important to ensure that all of these trees are consistently rooted before you calculate a consensus tree.  You may do so using the -rr and -names commands from Phyutility (https://github.com/blackrim/phyutility), for example.
+
 
 #### MP-EST Requirements
 
