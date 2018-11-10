@@ -42,10 +42,10 @@ MP-EST - The Perl script calls [MP-EST](http://faculty.franklin.uga.edu/lliu/mp-
 
 #### NJst and STAR Requirements
 
-R - The NJst and STAR methods are part of the R package [Phybase](http://faculty.franklin.uga.edu/lliu/phybase). Therefore, R and the Phybase package must be installed. This also requires the installation of additional R packages: ape, Matrix, and methods. The Rscript application that allows running R code must be either in your PATH or you must provide a full path to it when calling msc_tree_resampling.pl (see below). The scripts have been tested on Phybase 1.4 and 1.5 but does **not** currently work on v2.0. Note that these methods are distance-based and, therefore, require that every possible pair of species co-occur in at least one gene tree. In cases of resampling datasets with a lot of missing data, it is possible that a given pseudoreplicate dataset will not meet this requirement. In such cases, STAR and NJst report a warning rather than a species tree, and this will appear in the final output file.
+R - The NJst and STAR methods are part of the R package [Phybase](http://faculty.franklin.uga.edu/lliu/phybase). Therefore, R and the Phybase package must be installed. This also requires the installation of additional R packages: ape, Matrix, and methods. The Rscript application that allows running R code must be either in your PATH or you must provide a full path to it when calling msc_tree_resampling.pl (see below). The scripts have been tested on Phybase 1.4 and 1.5 but do **not** currently work on v2.0. Note that these methods are distance-based and, therefore, require that every possible pair of species co-occur in at least one gene tree. In cases of resampling datasets with a lot of missing data, it is possible that a given pseudoreplicate dataset will not meet this requirement. In such cases, STAR and NJst report a warning rather than a species tree, and this will appear in the final output file.
 
 
-## Output Format. 
+## Output Format:
 
 The script will produce pseudoreplicate tree files in the specified output directory. They will be named Rep_XXX.tre, where XXX ranges from 1 to the number of specified resampling replicates. Each file contains one newick-formatted gene tree on each line (the total number of gene trees will depend on the size of the original dataset and the resampling method). If one of the four MSC programs was specified with --method, the output directory will also contain a file called MSC_trees.tre. This file will contain one newick-formatted species tree on each line. The number of species trees should equal the number of pseudoreplicate datasets, and the ordering of the species trees within MSC_trees.tre follows the numerical order of the pseudoreplicate resampling files. You may use the MSC_trees.tre file to calculate a majority-rule consensus of the bootstrap or jackknife replicates using another program, such as [Phyutility](https://github.com/blackrim/phyutility), [Mesquite](http://mesquiteproject.org/), and [PAUP*](http://paup.phylosolutions.com/).  Finally, you may map the bootstrap or jackknife percentages onto the optimal tree for the original data set using the "Add support values..." function of [TreeGraph2](http://treegraph.bioinfweb.info/).
 
@@ -131,7 +131,7 @@ Usage: perl msc_tree_resampling.pl [arguments]
 
 
    Path and filename for the Rscript application installed on local machine
-     [required if --method=star or --method=njst and not already in PATH]
+     [required if --method=star or --method=njst and is not already in PATH]
    
    	     --Rscript      - default: Rscript
 
