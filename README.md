@@ -11,7 +11,7 @@ The main Perl script (msc_tree_resampling.pl) implements a resampling scheme (ei
 
 ## Citation: 
 
-Simmons MP, Sloan DB, Springer MS, Gatesy J. In Press. [Gene-wise resampling outperforms site-wise resampling in phylogenetic coalescence analyses](https://www.sciencedirect.com/science/article/pii/S1055790318301404). Molecular Phylogenetics and Evolution.
+Simmons MP, Sloan DB, Springer MS, Gatesy J. 2019. [Gene-wise resampling outperforms site-wise resampling in phylogenetic coalescence analyses](https://www.sciencedirect.com/science/article/pii/S1055790318301404). Molecular Phylogenetics and Evolution. 131: 80-92.
 
 
 ## Minimum Requirements: 
@@ -136,10 +136,10 @@ Usage: perl msc_tree_resampling.pl [arguments]
    	     --Rscript      - default: Rscript
 
    	     
-   Outgroup species:
+   Outgroup species [required if --method=star]
    
    	     --outgroup     - name of outgroup taxon (must be a single species, 
-   	                      not a clade). [required if --method=star]
+   	                      not a clade).
 
 
    Path and filename for the star.r code on local machine
